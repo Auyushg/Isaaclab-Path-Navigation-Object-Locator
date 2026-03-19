@@ -1,4 +1,4 @@
-# Isaac Lab Unitree Go2 RL pathplanning
+# Isaac Lab Unitree Go2 RL-based Pathplanning
 
 ## Overview
 
