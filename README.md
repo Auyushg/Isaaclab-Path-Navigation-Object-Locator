@@ -1,14 +1,21 @@
-# Template for Isaac Lab Projects
+# Isaac Lab Unitree Go2 RL pathplanning
 
 ## Overview
 
-This project/repository serves as a template for building projects or extensions based on Isaac Lab.
-It allows you to develop in an isolated environment, outside of the core Isaac Lab repository.
+A reinforcement learning framework for training a Unitree Go2 quadruped robot to autonomously navigate warehouse environments using lidar-based obstacle avoidance and waypoint navigation. The robot learns to walk, avoid obstacles, and follow sequential waypoints through complex indoor environments including narrow corridors and sharp turns.
 
 **Key Features:**
 
-- `Isolation` Work outside the core Isaac Lab repository, ensuring that your development efforts remain self-contained.
-- `Flexibility` This template is set up to allow your code to be run as an extension in Omniverse.
+
+Waypoint Navigation Autonomous navigation through sequential XY coordinate waypoints in USD environments
+
+Lidar-Based Obstacle Avoidance Real-time obstacle detection and avoidance using a 3D lidar sensor
+
+Curriculum Learning Two-phase training — walking policy followed by obstacle navigation fine-tuning
+
+Corridor Navigation Specialized handling for narrow corridors including wall centering and sharp turn execution
+
+Isaac Lab Integration Built on NVIDIA Isaac Lab with RSL-RL PPO training framework
 
 **Keywords:** extension, template, isaaclab
 
