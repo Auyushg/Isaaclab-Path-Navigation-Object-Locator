@@ -106,7 +106,7 @@ from isaaclab_assets.robots.unitree import UNITREE_GO2_CFG
 from isaaclab.scene import InteractiveSceneCfg
 from isaaclab.sensors.ray_caster import RayCasterCfg, patterns
 from isaaclab.utils import configclass
-from isaaclab.sensors import RayCasterCfg, patterns
+from isaaclab.sensors import RayCasterCfg, patterns, TiledCameraCfg
 from isaaclab.utils import configclass
 from isaaclab.assets import ArticulationCfg, AssetBaseCfg
 import isaaclab.sim as sim_utils
@@ -165,6 +165,38 @@ class Go2SceneCfg(InteractiveSceneCfg):
         force_threshold=5.0,                       # tune: 3–10 N typical
         debug_vis=False,
     )
+
+    front_camera = CameraCfg(
+        prim_path="{ENV_REGEX_NS}/Robot/base/front_cam",
+        update_period=0.1,
+        height=480,
+        width=640,
+        data_types=["rgb", "distance_to_image_plane"],
+        spawn=sim_utils.PinholeCameraCfg(
+            focal_length=24.0, focus_distance=400.0, horizontal_aperture=20.955, clipping_range=(0.1, 1.0e5)
+        ),
+        offset=CameraCfg.OffsetCfg(pos=(0.510, 0.0, 0.015), rot=(0.5, -0.5, 0.5, -0.5), convention="ros"),
+        )
+
+    depth_camera: TiledCameraCfg = TiledCameraCfg(
+        prim_path="{ENV_REGEX_NS}/Robot/base/depth_camera",
+        update_period=0.1,
+        height=64,
+        width=64,
+        data_types=["distance_to_camera"],  # depth data
+        spawn=sim_utils.PinholeCameraCfg(
+            focal_length=24.0,
+            focus_distance=400.0,
+            horizontal_aperture=20.955,
+            clipping_range=(0.1, 10.0)  # 10m max depth range
+        ),
+        offset=TiledCameraCfg.OffsetCfg(
+            pos=(0.3, 0.0, 0.05),
+            rot=(0.707, 0.0, 0.707, 0.0),
+            convention="ros"
+        ),
+    )
+
 
     
     spheres: RigidObjectCollectionCfg = RigidObjectCollectionCfg(

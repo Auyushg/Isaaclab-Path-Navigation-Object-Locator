@@ -193,6 +193,8 @@ class Go2Isaaclabws2Env(DirectRLEnv):
         self.lidar = self.scene["lidar"]
         self.feet_sensor = self.scene["contact_sensor"]
         self.spheres = self.scene["spheres"]
+        self.front_camera = self.scene["front_camera"]
+        self.depth_camera = self.scene["depth_camera"]
 
         # Load warehouse using their function
         create_full_warehouse_env()
