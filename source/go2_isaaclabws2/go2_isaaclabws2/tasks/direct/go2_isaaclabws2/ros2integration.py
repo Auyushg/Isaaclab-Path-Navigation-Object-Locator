@@ -175,7 +175,7 @@ class Go2ROS2Bridge(Node):
         tf_msg.transform.translation.y = 0.0
         tf_msg.transform.translation.z = 0.2
 
-        # Match Zhefan-Xu rotation convention:
+
         tf_msg.transform.rotation.x = -0.5
         tf_msg.transform.rotation.y = 0.5
         tf_msg.transform.rotation.z = -0.5
