@@ -243,24 +243,8 @@ class Go2Isaaclabws2Env(DirectRLEnv):
         self.actions = torch.zeros((self.num_envs, action_dim), device=self.device)
         self.prev_actions = torch.zeros_like(self.actions)
 
-
-    def _pre_physics_step(self, actions: torch.Tensor) -> None:
-        self._ensure_action_buffers()
-
-        if self.leg_joint_ids is None:
-            try:
-                self._init_leg_joint_ids()
-            except Exception as e:
-                print("Joint-id init not ready yet:", e, flush=True)
-
-        self.actions[:] = actions
-        self.yaw_cmd_int += self.cmd[:, 1] * self.cfg.sim.dt
-        self.sim_time += self.cfg.sim.dt
-        self.train_step_counter += 1
-
-        # UNCOMMENT THIS:
-        if hasattr(self, 'lidar_front'):
-            # Always point toward waypoint
+    def command_loop(self):
+        # Always point toward waypoint
             current_pos = self.robot.data.root_link_pos_w[:, :2]
             target = self.waypoints[self.current_waypoint_idx]
             to_target = target - current_pos
@@ -402,6 +386,25 @@ class Go2Isaaclabws2Env(DirectRLEnv):
                 print(f"[SHARP] cmd_wz={self.cmd[0,1]:.2f} should be ±2.5")
                 actual_wz = self.robot.data.root_ang_vel_b[0, 2].item()
                 print(f"[SHARP] cmd_wz={self.cmd[0,1]:.2f} actual_wz={actual_wz:.2f} heading_err={heading_err[0]:.2f}")
+
+
+    def _pre_physics_step(self, actions: torch.Tensor) -> None:
+        self._ensure_action_buffers()
+
+        if self.leg_joint_ids is None:
+            try:
+                self._init_leg_joint_ids()
+            except Exception as e:
+                print("Joint-id init not ready yet:", e, flush=True)
+
+        self.actions[:] = actions
+        self.yaw_cmd_int += self.cmd[:, 1] * self.cfg.sim.dt
+        self.sim_time += self.cfg.sim.dt
+        self.train_step_counter += 1
+
+        # UNCOMMENT THIS:
+        if hasattr(self, 'lidar_front'):
+            self.command_loop()
         
 
 
